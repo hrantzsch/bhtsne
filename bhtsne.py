@@ -148,8 +148,8 @@ def bh_tsne(samples, no_dims=DEFAULT_NO_DIMS, perplexity=DEFAULT_PERPLEXITY,
 
 def load_file(data, file_num):
     file_prefix = 'batch_'
-    filename = os.path.join(data, "{:04d}".format(file_num))
-    return pickle.load(open(os.path.join(filename), 'rb'))
+    filename = path_join(data, "{}{:04d}.pkl".format(file_prefix, file_num))
+    return pickle.load(open(filename, 'rb'))
 
 
 if __name__ == '__main__':
@@ -162,8 +162,8 @@ if __name__ == '__main__':
     # data = np.vstack([data[key] for key in data.keys()]).squeeze()
 
     # Signatures
-    files = [load_file(argp.input, fn) for f in range(argp.classes)]
-    data = np.vstack(data[:10]).squeeze()
+    files = [load_file(argp.input, fn) for fn in range(1, argp.classes+1)]
+    data = np.vstack(files[:10]).squeeze()
 
     for result in bh_tsne(data, no_dims=argp.no_dims,
                           perplexity=argp.perplexity, theta=argp.theta,
